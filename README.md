@@ -1,10 +1,10 @@
-# Aurora — Premium Glassmorphism Theme for Pterodactyl 1.x
+# Aurora Theme
 
-A dark, premium, futuristic game-hosting dashboard theme for the **Pterodactyl Panel 1.x (current stable)**. Built with glassmorphism, purple-blue gradients, rounded corners and tasteful glow effects — while preserving 100% of Pterodactyl's functionality.
+Aurora is a free and open source **fork of the Pterodactyl panel** with a premium dark glassmorphism theme. It keeps 100% of Pterodactyl's functionality while adding a modern, futuristic game-hosting dashboard aesthetic: purple-blue gradients, glass cards, glow effects, and a redesigned server dashboard.
 
-> Compatible with: Pterodactyl **1.x** (AdminLTE admin panel + React/Tailwind client UI). Not for Pterodactyl 0.7.x or 2.x.
+> Based on Pterodactyl **v1.15.0**. Not for Pterodactyl 0.7.x or 2.x.
 
----
+![Aurora Theme](https://github.com/AlnoXD404/athemes/blob/main/.github/banner.png?raw=true)
 
 ## Features
 
@@ -13,88 +13,141 @@ A dark, premium, futuristic game-hosting dashboard theme for the **Pterodactyl P
 - 📊 **Redesigned dashboard** — Server Status, CPU, RAM, Disk, Network, Console & server controls all styled
 - 💜 **Purple-blue gradients** on buttons, active sidebar items, stat blocks, progress bars and badges
 - ✨ **Glow effects** — glowing icon boxes, hover lifts, pulsing status indicators
-- 🖥️ **Styled console/terminal** — monospace font, dark glass, glowing cursor
+- 🖥️ **Styled console/terminal** — custom xterm palette, monospace font, glowing cursor
 - 📱 **Fully responsive** — desktop, tablet, mobile
-- 🔒 **Non-breaking** — pure CSS injection; all Pterodactyl features intact
-
-## Installation
-
-> **Important:** Pterodactyl 1.x has **no "Theme" settings page** (the Custom CSS/HTML boxes were removed with Pterodactyl 0.7). The theme is injected by adding a `<link>` to the two layout files below.
-
-### Step 1 — Upload the CSS
-
-SSH into your panel server and place the stylesheet where the panel can serve it:
-
-```bash
-cd /var/www/pterodactyl
-```
-
-Upload `aurora/custom.css` to `public/themes/pterodactyl/css/aurora.css`:
-
-```bash
-# from your local machine:
-scp aurora/custom.css root@YOUR_SERVER:/var/www/pterodactyl/public/themes/pterodactyl/css/aurora.css
-```
-
-### Step 2 — Load the CSS in both layouts
-
-**Client UI** (dashboard, console, files — the React app). Edit:
-
-```bash
-nano /var/www/pterodactyl/resources/views/templates/wrapper.blade.php
-```
-
-Inside the `<head>`, right before `</head>`, add:
-
-```html
-<link rel="stylesheet" href="/themes/pterodactyl/css/aurora.css">
-```
-
-**Admin UI** (admin panel — AdminLTE). Edit:
-
-```bash
-nano /var/www/pterodactyl/resources/views/layouts/admin.blade.php
-```
-
-Add the same line right before `</head>`:
-
-```html
-<link rel="stylesheet" href="/themes/pterodactyl/css/aurora.css">
-```
-
-### Step 3 (optional) — Background orbs & fonts
-
-Open the client layout again and paste the **entire contents of `aurora/custom.html`** right before `</body>` in `resources/views/templates/wrapper.blade.php`. This adds the animated glow orbs, premium fonts and small UI polish. (Skip this if you only want the flat glass styling.)
-
-### Step 4 — Clear the view cache & reload
-
-```bash
-cd /var/www/pterodactyl
-php artisan view:clear
-```
-
-Then hard-refresh your browser (`Ctrl+Shift+R`).
-
-> **Note:** Editing `resources/views/...` files will be overwritten when you update the panel. Re-apply the `<link>` lines after each panel update. The CSS file itself in `public/` survives updates.
-
-## Customization
-
-All colors are defined as CSS variables at the top of `aurora/custom.css`:
-
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `--aurora-purple` | `#8b5cf6` | Primary purple accent |
-| `--aurora-blue` | `#3b82f6` | Primary blue accent |
-| `--aurora-cyan` | `#22d3ee` | Secondary highlight |
-| `--aurora-gradient` | purple → blue | Buttons, active items, progress |
-| `--aurora-bg` | `#08080d` | Page background |
-
-Edit any variable to instantly re-theme the whole panel.
+- 🔒 **Non-breaking** — all Pterodactyl features intact
 
 ## Screenshots
 
-_Add screenshots here by running the theme on a live panel and dropping images into the repo._
+_Add screenshots here._
 
-## Support
+## Installation
 
-Open an issue in this repository.
+This will update your panel to the latest version of the Aurora theme fork. The theme is baked directly into the panel source, so it applies to both the client UI and the admin UI automatically.
+
+### Enter Maintenance Mode
+
+Whenever you are performing an update you should place your Panel into maintenance mode:
+
+```bash
+cd /var/www/pterodactyl
+php artisan down
+```
+
+### Download the theme
+
+```bash
+curl -L https://github.com/AlnoXD404/athemes/releases/latest/download/panel.tar.gz | tar -xzv
+```
+
+Once all of the files are downloaded, set the correct permissions on the cache and storage directories:
+
+```bash
+chmod -R 755 storage/* bootstrap/cache
+```
+
+### Update Dependencies
+
+```bash
+composer install --no-dev --optimize-autoloader
+```
+
+### Build the frontend
+
+Aurora re-themes the panel's React frontend. Build the new assets:
+
+```bash
+yarn install --frozen-lockfile
+yarn build:production
+```
+
+### Clear Compiled Template Cache
+
+```bash
+php artisan view:clear
+php artisan config:clear
+```
+
+### Database Updates
+
+```bash
+php artisan migrate --seed --force
+```
+
+### Set Permissions
+
+Set the proper owner of the files to the user that runs your webserver (usually `www-data`):
+
+```bash
+# If using NGINX or Apache (not on CentOS):
+chown -R www-data:www-data /var/www/pterodactyl/*
+
+# If using NGINX on CentOS:
+chown -R nginx:nginx /var/www/pterodactyl/*
+
+# If using Apache on CentOS:
+chown -R apache:apache /var/www/pterodactyl/*
+```
+
+### Restart Queue Workers
+
+After every update you should restart the queue worker:
+
+```bash
+php artisan queue:restart
+```
+
+### Exit Maintenance Mode
+
+```bash
+php artisan up
+```
+
+## Building from source
+
+If you want to build the release tarball yourself:
+
+```bash
+git clone https://github.com/AlnoXD404/athemes.git
+cd athemes
+yarn install --frozen-lockfile
+./release.sh
+```
+
+Artifacts are written to `./release/panel.tar.gz`.
+
+## Customization
+
+The main theme colors are defined in two places:
+
+| Where | What |
+| --- | --- |
+| `public/themes/pterodactyl/css/aurora.css` (CSS variables) | All glass surfaces, glows, admin UI |
+| `tailwind.config.js` + `resources/scripts/...` | Client (React) palette & component styling |
+
+Key variables at the top of `aurora.css`:
+
+| Variable | Default |
+| --- | --- |
+| `--aurora-purple` | `#8b5cf6` |
+| `--aurora-blue` | `#3b82f6` |
+| `--aurora-cyan` | `#22d3ee` |
+| `--aurora-gradient` | purple → blue |
+| `--aurora-bg` | `#08080d` |
+
+Edit them to instantly re-theme the whole panel.
+
+## Documentation
+
+- [Panel Documentation](https://pterodactyl.io/panel/1.0/getting_started.html)
+- [Wings Documentation](https://pterodactyl.io/wings/1.0/installing.html)
+
+## License
+
+Pterodactyl® Copyright © 2015 - 2024 Dane Everitt and contributors.
+
+Pterodactyl code released under the [MIT License](LICENSE.md).
+
+Aurora theme edits released under the MIT License — see [LICENSE.md](LICENSE.md).
+
+_Not affiliated with Pterodactyl® Panel or its contributors._
