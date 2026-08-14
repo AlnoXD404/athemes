@@ -1,19 +1,22 @@
 /* =============================================================
    AURORA — Premium Glassmorphism Theme for Pterodactyl Panel 1.x
    -------------------------------------------------------------
-   • Paste this file into:  Admin Panel → Settings → Theme
-     → "Custom CSS" input box.
-   • For the full effect also paste aurora/custom.html into the
-     "Custom HTML" input box (adds animated background orbs,
-     premium fonts and small UI polish).
-   • Compatible with Pterodactyl 1.x (AdminLTE 3 markup).
+   Pterodactyl 1.x has NO "Theme" settings page (removed with 0.7).
+   Install this file per the README (add a <link> to it inside
+   resources/views/templates/wrapper.blade.php for the client UI
+   and resources/views/layouts/admin.blade.php for the admin UI).
+
+   Covers BOTH interfaces:
+     • Admin panel  → AdminLTE 3 markup (.main-sidebar, .box, ...)
+     • Client UI    → React + Tailwind (.bg-neutral-*, .stat_block,
+                       .terminal, ...)
    ============================================================= */
 
 :root {
   --aurora-bg: #08080d;
   --aurora-bg-alt: #0c0c15;
   --aurora-surface: rgba(255, 255, 255, 0.04);
-  --aurora-surface-strong: rgba(255, 255, 255, 0.07);
+  --aurora-surface-strong: rgba(255, 255, 255, 0.08);
   --aurora-border: rgba(255, 255, 255, 0.09);
   --aurora-border-strong: rgba(255, 255, 255, 0.16);
   --aurora-text: #f2f4ff;
@@ -42,29 +45,30 @@ html {
     radial-gradient(900px 700px at -10% 20%, rgba(139, 92, 246, 0.18), transparent 60%),
     radial-gradient(800px 500px at 50% 110%, rgba(34, 211, 238, 0.08), transparent 60%);
   background-attachment: fixed;
-  color: var(--aurora-text);
-  font-family: "Inter", "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--aurora-text) !important;
+  font-family: "Inter", "Outfit", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   letter-spacing: 0.1px;
 }
 
-body {
-  min-height: 100vh;
+/* Client React body is bg-neutral-800 / bg-neutral-900 by default */
+body.bg-neutral-800,
+body.bg-neutral-900,
+body.bg-neutral-50 {
+  background-color: var(--aurora-bg) !important;
+  background-image:
+    radial-gradient(1000px 600px at 85% -10%, rgba(59, 130, 246, 0.16), transparent 60%),
+    radial-gradient(900px 700px at -10% 20%, rgba(139, 92, 246, 0.18), transparent 60%),
+    radial-gradient(800px 500px at 50% 110%, rgba(34, 211, 238, 0.08), transparent 60%) !important;
 }
 
-#app,
+#app {
+  background: transparent;
+}
+
 .wrapper,
 .content-wrapper,
 .content-area {
   background: transparent !important;
-}
-
-.wrapper {
-  display: flex;
-}
-
-.content-wrapper {
-  margin-left: 260px;
-  transition: margin-left 0.25s ease;
 }
 
 /* Custom scrollbar */
@@ -92,7 +96,7 @@ body {
 }
 
 /* =============================================================
-   2. SIDEBAR
+   2. SIDEBAR  (admin panel)
    ============================================================= */
 
 .main-sidebar,
@@ -111,9 +115,8 @@ body {
   box-shadow: 4px 0 30px rgba(0, 0, 0, 0.35);
 }
 
-/* Brand / logo header */
 .main-header .logo,
-.main-sidebar .brand-link,
+.brand-link,
 .skin-blue .main-header .logo,
 .skin-blue .main-sidebar {
   border-right: 1px solid var(--aurora-border);
@@ -156,7 +159,6 @@ body {
   width: 5px;
 }
 
-/* Sidebar section headers */
 .nav-header,
 .sidebar .nav-header {
   color: var(--aurora-text-dim) !important;
@@ -167,7 +169,6 @@ body {
   font-weight: 700;
 }
 
-/* Sidebar links */
 .nav-sidebar > .nav-item > .nav-link,
 .sidebar-menu > li > a {
   color: var(--aurora-text-muted);
@@ -187,7 +188,6 @@ body {
   transform: translateX(2px);
 }
 
-/* Active item */
 .nav-sidebar > .nav-item > .nav-link.active,
 .nav-sidebar > .nav-item.menu-open > .nav-link,
 .sidebar-menu > li.active > a,
@@ -214,7 +214,6 @@ body {
   color: var(--aurora-cyan);
 }
 
-/* Submenu (treeview) */
 .nav-treeview {
   padding-left: 0;
 }
@@ -236,7 +235,6 @@ body {
   background: rgba(139, 92, 246, 0.12);
 }
 
-/* Sidebar toggle icon */
 .sidebar-toggle {
   color: var(--aurora-text-muted) !important;
 }
@@ -265,7 +263,6 @@ body {
   background: var(--aurora-surface);
 }
 
-/* Dropdown menus */
 .dropdown-menu {
   background: rgba(16, 16, 26, 0.92) !important;
   backdrop-filter: blur(20px);
@@ -282,10 +279,6 @@ body {
 .dropdown-menu .dropdown-item:hover {
   background: var(--aurora-surface);
   color: #fff;
-}
-
-.user-menu .user-footer .btn {
-  margin: 4px;
 }
 
 /* =============================================================
@@ -328,7 +321,7 @@ body {
 }
 
 /* =============================================================
-   5. GLASS CARDS
+   5. GLASS CARDS  (admin + client)
    ============================================================= */
 
 .card,
@@ -364,11 +357,6 @@ body {
   font-size: 16px;
 }
 
-.card-header::before,
-.card-header::after {
-  display: none;
-}
-
 .card-body,
 .box-body {
   padding: 22px;
@@ -382,105 +370,184 @@ body {
   border-radius: 0 0 var(--aurora-radius-lg) var(--aurora-radius-lg) !important;
 }
 
-/* Cards with gradient accent top border */
-.card:has(.card-header) {
-  position: relative;
-  overflow: hidden;
-}
-.card:has(.card-header)::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--aurora-gradient);
-  opacity: 0.8;
-  z-index: 1;
-}
-
 /* =============================================================
-   6. SMALL BOXES / INFO BOXES (dashboard stats)
+   6. CLIENT UI — REACT + TAILWIND
+   -------------------------------------------------------------
+   The client (dashboard, servers, console, files) is React with
+   Tailwind utility classes. We override the surface + accent
+   utilities used across the client for a consistent glass look.
    ============================================================= */
 
-.small-box,
-.info-box {
+/* Navbar (client) */
+.w-full.bg-neutral-900,
+div.bg-neutral-900 {
+  background: rgba(12, 12, 21, 0.6) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--aurora-border);
+}
+
+/* Cards / rows / panels */
+.bg-neutral-700,
+.bg-neutral-800,
+.bg-neutral-600,
+.bg-gray-700,
+.bg-gray-800 {
+  background: var(--aurora-surface) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--aurora-border);
+  border-radius: var(--aurora-radius) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Hoverable rows (GreyRowBox / server list) */
+.bg-neutral-700:hover,
+.bg-neutral-800:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.18);
+  border-color: var(--aurora-purple);
+}
+
+/* Stat blocks (CPU / RAM / Disk / Network) */
+.stat_block,
+.chart_container,
+.statblock {
   background: var(--aurora-surface) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--aurora-border) !important;
   border-radius: var(--aurora-radius) !important;
   box-shadow: 0 8px 26px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.small-box:hover {
+.stat_block:hover,
+.chart_container:hover {
   transform: translateY(-3px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
 
-.small-box > .inner h3,
-.info-box-number {
-  font-family: "Outfit", "Inter", sans-serif;
-  font-weight: 800;
+/* Stat icon containers get a gradient */
+.stat_block .icon,
+.stat_block > .icon {
+  background: var(--aurora-gradient) !important;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px var(--aurora-glow-purple);
+}
+
+/* Stat status bars */
+.stat_block .status_bar {
+  background: var(--aurora-gradient) !important;
+}
+
+/* Chart containers use a subtle gradient accent */
+.chart_container {
+  border-bottom: 3px solid transparent !important;
+  border-image: var(--aurora-gradient) 1;
+}
+
+/* Client buttons: primary (blue) → purple-blue gradient */
+.bg-blue-600,
+.bg-primary-600 {
+  background: var(--aurora-gradient) !important;
+  box-shadow: 0 6px 18px var(--aurora-glow-purple);
+  transition: all 0.2s ease;
+}
+.bg-blue-600:hover,
+.bg-blue-500,
+.bg-primary-500 {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px var(--aurora-glow-purple);
+}
+
+/* Danger / success / warning buttons */
+.bg-red-600 {
+  background: linear-gradient(135deg, #ef4444, #f97316) !important;
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.4);
+}
+.bg-green-600 {
+  background: linear-gradient(135deg, #10b981, #22d3ee) !important;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+}
+.bg-yellow-500,
+.bg-amber-500 {
+  background: linear-gradient(135deg, #f59e0b, #f97316) !important;
+}
+
+/* Client status indicator on server list */
+.status-bar,
+div.status-bar {
+  border-radius: 6px;
+}
+
+/* Client form controls */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--aurora-border-strong) !important;
+  color: var(--aurora-text) !important;
+  border-radius: 10px !important;
+  padding: 9px 14px;
+  transition: all 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--aurora-purple) !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--aurora-text-dim);
+}
+
+/* Client headings & text */
+.font-header,
+.font-medium {
   color: #fff;
-  font-size: 28px;
 }
-
-.small-box > .inner p,
-.info-box-text {
-  color: var(--aurora-text-muted);
-  font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
-
-/* Icon containers get gradient glow */
-.small-box .icon,
-.info-box-icon {
-  background: var(--aurora-gradient);
+.text-gray-100,
+.text-gray-50,
+.text-neutral-100,
+.text-neutral-50 {
   color: #fff !important;
-  border-radius: var(--aurora-radius);
-  box-shadow: 0 8px 22px var(--aurora-glow-purple);
 }
-
-/* Per-colour variants keep glass but re-tint icon */
-.small-box.bg-blue .icon,
-.info-box-icon.bg-blue {
-  background: linear-gradient(135deg, #3b82f6, #22d3ee);
-  box-shadow: 0 8px 22px var(--aurora-glow-blue);
+.text-gray-200,
+.text-neutral-200 {
+  color: #eef1fb !important;
 }
-.small-box.bg-green .icon,
-.info-box-icon.bg-green {
-  background: linear-gradient(135deg, #10b981, #22d3ee);
-  box-shadow: 0 8px 22px rgba(16, 185, 129, 0.4);
+.text-gray-300,
+.text-neutral-300 {
+  color: var(--aurora-text-muted) !important;
 }
-.small-box.bg-red .icon,
-.info-box-icon.bg-red {
-  background: linear-gradient(135deg, #ef4444, #f97316);
-  box-shadow: 0 8px 22px rgba(239, 68, 68, 0.4);
+.text-gray-400,
+.text-neutral-400 {
+  color: var(--aurora-text-muted) !important;
 }
-.small-box.bg-purple .icon {
-  background: var(--aurora-gradient);
-}
-.small-box.bg-yellow .icon,
-.info-box-icon.bg-yellow {
-  background: linear-gradient(135deg, #f59e0b, #f97316);
-  box-shadow: 0 8px 22px rgba(245, 158, 11, 0.4);
+.text-gray-500,
+.text-neutral-500 {
+  color: var(--aurora-text-dim) !important;
 }
 
 /* =============================================================
    7. SERVER STATUS / DASHBOARD
    ============================================================= */
 
-#server_status {
-  display: inline-flex;
-  align-items: center;
-}
-
-/* Status badge */
 .badge,
 .label {
   border-radius: 30px;
@@ -509,27 +576,6 @@ body {
   border: 1px solid rgba(59, 130, 246, 0.35);
 }
 
-/* Server power icon (green pulse when running) */
-.server-status {
-  transition: all 0.3s ease;
-}
-.server-status.running {
-  color: #34d399;
-  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.8));
-  animation: aurora-pulse 2s infinite;
-}
-
-@keyframes aurora-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
-}
-
-/* Stat readouts on server index */
-.list-unstyled span[data-action] {
-  font-weight: 600;
-  color: #fff;
-}
-
 /* =============================================================
    8. CONSOLE & TERMINAL
    ============================================================= */
@@ -542,30 +588,32 @@ body {
   border-radius: var(--aurora-radius);
   box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
   color: #d7e0f4;
-  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace !important;
   font-size: 13px;
   line-height: 1.55;
 }
 
-.terminal-output {
-  padding: 14px 18px;
+/* React client terminal container */
+.terminal .container,
+.terminal > .container {
+  background: rgba(5, 5, 10, 0.85) !important;
+  border: 1px solid var(--aurora-border);
+  border-radius: var(--aurora-radius);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
-/* Console command input */
-.terminal-input {
+.terminal .command_input,
+.terminal .command-input {
   background: rgba(255, 255, 255, 0.05) !important;
   border-top: 1px solid var(--aurora-border);
   color: #fff;
-  font-family: "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", monospace !important;
 }
 
-#console .terminal-output .console-msg {
-  color: var(--aurora-text-muted);
-}
-
-/* Blinking cursor preserved for JS */
-.terminal-cursor {
-  background: var(--aurora-cyan);
+/* xterm cursor glow */
+.terminal-cursor,
+.xterm .xterm-cursor {
+  background: var(--aurora-cyan) !important;
   box-shadow: 0 0 8px var(--aurora-cyan);
 }
 
@@ -646,7 +694,6 @@ body {
   filter: grayscale(0.4);
 }
 
-/* Active / pressed feedback */
 .btn:active {
   transform: translateY(0) scale(0.98);
 }
@@ -686,7 +733,6 @@ textarea.form-control {
   opacity: 0.6;
 }
 
-/* Custom select dropdown arrow re-tint */
 .custom-select {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%239aa3bb' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
 }
@@ -774,6 +820,15 @@ textarea.form-control {
 .modal-backdrop.show {
   opacity: 0.6;
   backdrop-filter: blur(4px);
+}
+
+/* Client React modals (dialog) */
+.dialog {
+  background: rgba(16, 16, 26, 0.95) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--aurora-border-strong);
+  border-radius: var(--aurora-radius-lg) !important;
 }
 
 /* =============================================================
@@ -890,16 +945,6 @@ textarea.form-control {
   overflow: hidden;
 }
 
-.auth-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--aurora-gradient);
-}
-
 .login-logo,
 .auth-brand {
   font-family: "Outfit", "Inter", sans-serif;
@@ -926,7 +971,6 @@ textarea.form-control {
    16. MISCELLANEOUS POLISH
    ============================================================= */
 
-/* Page titles / headings */
 h1, h2, h3, h4 {
   color: #fff;
 }
@@ -939,7 +983,6 @@ a:hover {
   color: var(--aurora-purple);
 }
 
-/* Links inside cards */
 .card a:not(.btn):not(.nav-link):not(.dropdown-item) {
   color: var(--aurora-cyan);
 }
@@ -947,7 +990,6 @@ a:hover {
   color: var(--aurora-purple);
 }
 
-/* Code blocks */
 code,
 pre {
   background: rgba(255, 255, 255, 0.06) !important;
@@ -956,27 +998,12 @@ pre {
   border: 1px solid var(--aurora-border);
 }
 
-/* Callout / info boxes inside cards */
 .callout {
   border-radius: var(--aurora-radius);
   background: var(--aurora-surface);
   border-left: 3px solid var(--aurora-purple);
 }
 
-/* Server list cards (base/index) */
-.server-list .server-block {
-  background: var(--aurora-surface);
-  border: 1px solid var(--aurora-border);
-  border-radius: var(--aurora-radius);
-  transition: all 0.25s ease;
-}
-.server-list .server-block:hover {
-  transform: translateY(-3px);
-  border-color: var(--aurora-purple);
-  box-shadow: 0 14px 34px rgba(139, 92, 246, 0.18);
-}
-
-/* Dropdown user avatar */
 .user-menu img {
   border-radius: 50%;
   box-shadow: 0 0 0 2px var(--aurora-purple);
@@ -1011,9 +1038,6 @@ pre {
   }
   .card-body {
     padding: 16px;
-  }
-  .small-box > .inner h3 {
-    font-size: 22px;
   }
 }
 

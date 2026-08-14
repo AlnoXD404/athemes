@@ -2,7 +2,7 @@
 
 A dark, premium, futuristic game-hosting dashboard theme for the **Pterodactyl Panel 1.x (current stable)**. Built with glassmorphism, purple-blue gradients, rounded corners and tasteful glow effects — while preserving 100% of Pterodactyl's functionality.
 
-> Compatible with: Pterodactyl **1.x** (AdminLTE 3 markup). Not for Pterodactyl 2.x.
+> Compatible with: Pterodactyl **1.x** (AdminLTE admin panel + React/Tailwind client UI). Not for Pterodactyl 0.7.x or 2.x.
 
 ---
 
@@ -10,37 +10,72 @@ A dark, premium, futuristic game-hosting dashboard theme for the **Pterodactyl P
 
 - 🎨 **Dark gaming aesthetic** — deep black/dark-gray background with subtle purple & blue radial glows
 - 🪟 **Glassmorphism cards** — semi-transparent surfaces, backdrop blur, rounded corners, thin borders
-- 📊 **Redesigned dashboard** — Server Status, CPU, RAM, Storage, Network, Console & server controls all styled
-- 💜 **Purple-blue gradients** on buttons, active sidebar items, progress bars and badges
-- ✨ **Glow effects** — animated pulsing status indicator, glowing icon boxes, hover lifts
-- 🖥️ **Styled console/terminal** — monospace font, dark glass, preserved cursor
+- 📊 **Redesigned dashboard** — Server Status, CPU, RAM, Disk, Network, Console & server controls all styled
+- 💜 **Purple-blue gradients** on buttons, active sidebar items, stat blocks, progress bars and badges
+- ✨ **Glow effects** — glowing icon boxes, hover lifts, pulsing status indicators
+- 🖥️ **Styled console/terminal** — monospace font, dark glass, glowing cursor
 - 📱 **Fully responsive** — desktop, tablet, mobile
-- 🔒 **Non-breaking** — pure CSS/HTML injection via the panel's built-in Theme settings; no core files touched
-- ♿ **Accessible** — respects `prefers-reduced-motion`
+- 🔒 **Non-breaking** — pure CSS injection; all Pterodactyl features intact
 
 ## Installation
 
-### 1. Panel Theme Settings (recommended)
+> **Important:** Pterodactyl 1.x has **no "Theme" settings page** (the Custom CSS/HTML boxes were removed with Pterodactyl 0.7). The theme is injected by adding a `<link>` to the two layout files below.
 
-1. Log in to your Pterodactyl panel as an **admin**.
-2. Go to **Admin Panel → Settings → Theme**.
-3. **Copy the entire contents** of [`aurora/custom.css`](aurora/custom.css) into the **Custom CSS** box.
-4. **Copy the entire contents** of [`aurora/custom.html`](aurora/custom.html) into the **Custom HTML** box *(enables fonts, animated background orbs & polish)*.
-5. Click **Save** and hard-refresh (`Ctrl+Shift+R`).
+### Step 1 — Upload the CSS
 
-Done — the theme applies instantly, no rebuild or restart needed.
-
-### 2. Manual drop-in (alternative)
-
-If you prefer a filesystem install, copy the two files over the panel's template output:
+SSH into your panel server and place the stylesheet where the panel can serve it:
 
 ```bash
-# From the panel root directory:
-mkdir -p resources/views/admin/settings
-# Then place the contents of custom.css / custom.html as described in step 1 via the admin UI instead.
+cd /var/www/pterodactyl
 ```
 
-> **Note:** The Theme-settings method is strongly preferred — it survives panel updates and never breaks core functionality.
+Upload `aurora/custom.css` to `public/themes/pterodactyl/css/aurora.css`:
+
+```bash
+# from your local machine:
+scp aurora/custom.css root@YOUR_SERVER:/var/www/pterodactyl/public/themes/pterodactyl/css/aurora.css
+```
+
+### Step 2 — Load the CSS in both layouts
+
+**Client UI** (dashboard, console, files — the React app). Edit:
+
+```bash
+nano /var/www/pterodactyl/resources/views/templates/wrapper.blade.php
+```
+
+Inside the `<head>`, right before `</head>`, add:
+
+```html
+<link rel="stylesheet" href="/themes/pterodactyl/css/aurora.css">
+```
+
+**Admin UI** (admin panel — AdminLTE). Edit:
+
+```bash
+nano /var/www/pterodactyl/resources/views/layouts/admin.blade.php
+```
+
+Add the same line right before `</head>`:
+
+```html
+<link rel="stylesheet" href="/themes/pterodactyl/css/aurora.css">
+```
+
+### Step 3 (optional) — Background orbs & fonts
+
+Open the client layout again and paste the **entire contents of `aurora/custom.html`** right before `</body>` in `resources/views/templates/wrapper.blade.php`. This adds the animated glow orbs, premium fonts and small UI polish. (Skip this if you only want the flat glass styling.)
+
+### Step 4 — Clear the view cache & reload
+
+```bash
+cd /var/www/pterodactyl
+php artisan view:clear
+```
+
+Then hard-refresh your browser (`Ctrl+Shift+R`).
+
+> **Note:** Editing `resources/views/...` files will be overwritten when you update the panel. Re-apply the `<link>` lines after each panel update. The CSS file itself in `public/` survives updates.
 
 ## Customization
 
@@ -62,4 +97,4 @@ _Add screenshots here by running the theme on a live panel and dropping images i
 
 ## Support
 
-Open an issue in this repository. To keep updates conflict-free, prefer the panel's built-in Theme settings over editing core files.
+Open an issue in this repository.

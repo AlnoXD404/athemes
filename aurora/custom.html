@@ -1,14 +1,13 @@
 <!-- =============================================================
   AURORA — Premium Glassmorphism Theme for Pterodactyl Panel 1.x
   -------------------------------------------------------------
-  Paste this file into:  Admin Panel → Settings → Theme
-  → "Custom HTML" input box.
+  Pterodactyl 1.x has NO theme settings page. This snippet goes
+  into resources/views/templates/wrapper.blade.php (client UI).
 
   Adds:
     • Premium Google Fonts (Outfit + Inter + JetBrains Mono)
     • Animated floating background glow orbs
-    • A subtle "glow" helper that tints primary buttons
-    • Keeps everything optional — the panel works without it.
+    • A subtle "Copy" helper for copyable code blocks
   ============================================================= -->
 
 <!-- 1. Fonts -->
@@ -74,11 +73,9 @@
   (function () {
     'use strict';
 
-    // Keep animated orbs on every page (SPA-safe enough for the panel).
     if (window.auroraInjected) return;
     window.auroraInjected = true;
 
-    // Add a "Copy" button to monospace server/console snippets if present.
     document.addEventListener('DOMContentLoaded', function () {
       document.querySelectorAll('.copyable').forEach(function (el) {
         if (el.dataset.auroraCopy) return;
