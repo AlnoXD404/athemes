@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Aurora Theme — release packaging script (NookTheme-style).
+# athemes Theme — release packaging script (NookTheme-style).
 # Builds the frontend and packages a drop-in `panel.tar.gz` that users
 # extract over an existing Pterodactyl 1.x install (see README).
 

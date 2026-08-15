@@ -1,10 +1,10 @@
-# Aurora Theme
+# athemes Theme
 
-Aurora is a free and open source **fork of the Pterodactyl panel** with a premium dark glassmorphism theme. It keeps 100% of Pterodactyl's functionality while adding a modern, futuristic game-hosting dashboard aesthetic: purple-blue gradients, glass cards, glow effects, and a redesigned server dashboard.
+athemes is a free and open source **fork of the Pterodactyl panel** with a premium dark glassmorphism theme. It keeps 100% of Pterodactyl's functionality while adding a modern, futuristic game-hosting dashboard aesthetic: purple-blue gradients, glass cards, glow effects, and a redesigned server dashboard.
 
 > Based on Pterodactyl **v1.15.0**. Not for Pterodactyl 0.7.x or 2.x.
 
-![Aurora Theme](https://github.com/AlnoXD404/athemes/blob/main/.github/banner.png?raw=true)
+![athemes Theme](https://github.com/AlnoXD404/athemes/blob/main/.github/banner.png?raw=true)
 
 ## Features
 
@@ -23,7 +23,7 @@ _Add screenshots here._
 
 ## Installation
 
-This will update your panel to the latest version of the Aurora theme fork. The theme is baked directly into the panel source, so it applies to both the client UI and the admin UI automatically.
+This will update your panel to the latest version of the athemes theme fork. The theme is baked directly into the panel source, so it applies to both the client UI and the admin UI automatically.
 
 ### Enter Maintenance Mode
 
@@ -54,7 +54,7 @@ composer install --no-dev --optimize-autoloader
 
 ### Build the frontend
 
-Aurora re-themes the panel's React frontend. Build the new assets:
+athemes re-themes the panel's React frontend. Build the new assets:
 
 ```bash
 yarn install --frozen-lockfile
@@ -148,6 +148,6 @@ Pterodactyl® Copyright © 2015 - 2024 Dane Everitt and contributors.
 
 Pterodactyl code released under the [MIT License](LICENSE.md).
 
-Aurora theme edits released under the MIT License — see [LICENSE.md](LICENSE.md).
+athemes theme edits released under the MIT License — see [LICENSE.md](LICENSE.md).
 
 _Not affiliated with Pterodactyl® Panel or its contributors._
