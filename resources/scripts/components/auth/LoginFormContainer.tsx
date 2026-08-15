@@ -50,6 +50,15 @@ export default forwardRef<HTMLFormElement, Props>(({ title, ...props }, ref) => 
             >
                 Pterodactyl Software
             </a>
+            &nbsp;&middot;&nbsp;Theme by&nbsp;
+            <a
+                rel={'noopener nofollow noreferrer'}
+                href={'https://www.youtube.com/@AlnoXD'}
+                target={'_blank'}
+                css={tw`no-underline text-neutral-500 hover:text-neutral-300`}
+            >
+                AlnoXD
+            </a>
         </p>
     </Container>
 ));
