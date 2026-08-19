@@ -17,10 +17,6 @@ Preview on Discord : https://discord.gg/k5bue2kesg
 - 📱 **Fully responsive** — desktop, tablet, mobile
 - 🔒 **Non-breaking** — all Pterodactyl features intact
 
-## Screenshots
-
-_Add screenshots here._
-
 ## Installation
 
 This will update your panel to the latest version of the athemes theme fork. The theme is baked directly into the panel source, so it applies to both the client UI and the admin UI automatically.
