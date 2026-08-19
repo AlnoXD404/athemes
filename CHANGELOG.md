@@ -3,6 +3,10 @@ This file is a running track of new features and fixes to each version of the pa
 
 This project follows [Semantic Versioning](http://semver.org) guidelines.
 
+## v1.26
+### Changed
+* Restructures the console status cards into a 3-row grid: full-width Server ID, then Address/Uptime/CPU Load, then Memory/Disk/Network, with inbound and outbound traffic combined into a single Network card.
+
 ## v1.25
 ### Changed
 * Adds "Created by AlnoXD" credit link (YouTube) to the client footer.
