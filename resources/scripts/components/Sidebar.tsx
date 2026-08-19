@@ -134,9 +134,9 @@ const SidebarSection: React.FC<DropdownProps> = ({ title, icon, to, children }) 
                     active ? tw`text-neutral-100 bg-neutral-800/60 border-cyan-500` : tw`hover:text-neutral-100 hover:bg-neutral-800/60`,
                 ]}
             >
-                <span css={tw`flex items-center`}>
-                    {icon && <FontAwesomeIcon icon={icon} css={tw`mr-3 w-4`} />}
-                    {title}
+                <span css={tw`flex items-center min-w-0`}>
+                    {icon && <FontAwesomeIcon icon={icon} css={tw`mr-3 w-4 flex-shrink-0`} />}
+                    <span css={tw`truncate`}>{title}</span>
                 </span>
                 <FontAwesomeIcon
                     icon={faChevronDown}
@@ -154,9 +154,10 @@ const SidebarSection: React.FC<DropdownProps> = ({ title, icon, to, children }) 
 
 interface SidebarProps {
     children: React.ReactNode;
+    hideAccount?: boolean;
 }
 
-const _Sidebar: React.FC<SidebarProps> = ({ children }) => {
+const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false }) => {
     const name = useStoreState((state: ApplicationStore) => state.settings.data!.name);
     const username = useStoreState((state: ApplicationStore) => state.user.data!.username);
     const rootAdmin = useStoreState((state: ApplicationStore) => state.user.data!.rootAdmin);
@@ -240,23 +241,27 @@ const _Sidebar: React.FC<SidebarProps> = ({ children }) => {
             </div>
             <nav css={tw`flex-1 py-3 overflow-y-auto`}>{children}</nav>
             <div css={tw`border-t border-neutral-800 py-3`}>
-                <Link
-                    to={'/account'}
-                    css={tw`flex items-center px-4 py-2 text-sm text-neutral-300 no-underline transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
-                >
-                    <span css={tw`flex items-center justify-center w-8 h-8 mr-3`}>
-                        <Avatar.User />
-                    </span>
-                    {username}
-                </Link>
-                {rootAdmin && (
-                    <a
-                        href={'/admin'}
-                        css={tw`flex items-center px-4 py-2 text-sm text-neutral-300 no-underline transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
-                    >
-                        <FontAwesomeIcon icon={faCogs} css={tw`mr-3 w-4`} />
-                        Admin
-                    </a>
+                {!hideAccount && (
+                    <>
+                        <Link
+                            to={'/account'}
+                            css={tw`flex items-center px-4 py-2 text-sm text-neutral-300 no-underline transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
+                        >
+                            <span css={tw`flex items-center justify-center w-8 h-8 mr-3`}>
+                                <Avatar.User />
+                            </span>
+                            {username}
+                        </Link>
+                        {rootAdmin && (
+                            <a
+                                href={'/admin'}
+                                css={tw`flex items-center px-4 py-2 text-sm text-neutral-300 no-underline transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
+                            >
+                                <FontAwesomeIcon icon={faCogs} css={tw`mr-3 w-4`} />
+                                Admin
+                            </a>
+                        )}
+                    </>
                 )}
                 <button
                     onClick={onTriggerLogout}
@@ -283,7 +288,7 @@ const _Sidebar: React.FC<SidebarProps> = ({ children }) => {
                     <FontAwesomeIcon icon={faBars} css={tw`w-5 h-5`} />
                 </button>
             </div>
-            <aside css={tw`hidden md:flex flex-col w-72 bg-neutral-900 border-r border-neutral-800 sticky top-0 h-screen`}>
+            <aside css={tw`hidden md:flex flex-col w-72 flex-shrink-0 bg-neutral-900 border-r border-neutral-800 sticky top-0 h-screen`}>
                 {content}
             </aside>
             {mobileOpen && (

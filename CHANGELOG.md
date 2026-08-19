@@ -3,6 +3,12 @@ This file is a running track of new features and fixes to each version of the pa
 
 This project follows [Semantic Versioning](http://semver.org) guidelines.
 
+## v1.22
+### Changed
+* Adds spacing around the client panel content so the sidebar no longer overlaps page content.
+* When viewing a server, the sidebar now only shows the dashboard and server-specific menu items, hiding account and admin links.
+* The server menu section is now labeled with the selected server's name.
+
 ## v1.21
 ### Changed
 * Replaces the top navigation bar with a persistent sidebar on the left edge of the client panel (dashboard and server areas).

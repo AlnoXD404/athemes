@@ -29,6 +29,7 @@ export default () => {
 
     const id = ServerContext.useStoreState((state) => state.server.data?.id);
     const uuid = ServerContext.useStoreState((state) => state.server.data?.uuid);
+    const serverName = ServerContext.useStoreState((state) => state.server.data?.name);
     const inConflictState = ServerContext.useStoreState((state) => state.server.inConflictState);
     const serverId = ServerContext.useStoreState((state) => state.server.data?.internalId);
     const getServer = ServerContext.useStoreActions((actions) => actions.server.getServer);
@@ -64,13 +65,13 @@ export default () => {
     return (
         <React.Fragment key={'server-router'}>
             <div css={tw`flex min-h-screen`}>
-                <Sidebar>
+                <Sidebar hideAccount={!!uuid && !!id}>
                     <Sidebar.Link to={'/'} exact>
                         <FontAwesomeIcon icon={faLayerGroup} css={tw`mr-3 w-4`} />
                         Dashboard
                     </Sidebar.Link>
-                    {!!uuid && !!id && (
-                        <Sidebar.Section title={'Server'} icon={faServer} to={match.url}>
+                    {!!uuid && !!id ? (
+                        <Sidebar.Section title={serverName || 'Server'} icon={faServer} to={match.url}>
                             {routes.server
                                 .filter((route) => !!route.name)
                                 .map((route) =>
@@ -93,18 +94,19 @@ export default () => {
                                 </Sidebar.DropdownExternalLink>
                             )}
                         </Sidebar.Section>
+                    ) : (
+                        <Sidebar.Section title={'Account'} icon={faUserCog} to={'/account'}>
+                            {routes.account
+                                .filter((route) => !!route.name)
+                                .map(({ path, name, exact = false }) => (
+                                    <Sidebar.DropdownLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
+                                        {name}
+                                    </Sidebar.DropdownLink>
+                                ))}
+                        </Sidebar.Section>
                     )}
-                    <Sidebar.Section title={'Account'} icon={faUserCog} to={'/account'}>
-                        {routes.account
-                            .filter((route) => !!route.name)
-                            .map(({ path, name, exact = false }) => (
-                                <Sidebar.DropdownLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
-                                    {name}
-                                </Sidebar.DropdownLink>
-                            ))}
-                    </Sidebar.Section>
                 </Sidebar>
-                <main css={tw`flex-1 min-w-0`}>
+                <main css={tw`flex-1 min-w-0 p-4 md:p-6`}>
                     {!uuid || !id ? (
                         error ? (
                             <ServerError message={error} />

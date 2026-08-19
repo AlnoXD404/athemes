@@ -31,7 +31,7 @@ export default () => {
                         ))}
                 </Sidebar.Section>
             </Sidebar>
-            <main css={tw`flex-1 min-w-0`}>
+            <main css={tw`flex-1 min-w-0 p-4 md:p-6`}>
                 <TransitionRouter>
                     <React.Suspense fallback={<Spinner centered />}>
                         <Switch location={location}>
