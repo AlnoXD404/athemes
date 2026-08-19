@@ -1,21 +1,20 @@
 import TransferListener from '@/components/server/TransferListener';
 import React, { useEffect, useState } from 'react';
-import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
-import NavigationBar from '@/components/NavigationBar';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt, faLayerGroup, faServer, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import tw from 'twin.macro';
+import Sidebar from '@/components/Sidebar';
 import TransitionRouter from '@/TransitionRouter';
 import WebsocketHandler from '@/components/server/WebsocketHandler';
 import { ServerContext } from '@/state/server';
-import { CSSTransition } from 'react-transition-group';
 import Can from '@/components/elements/Can';
 import Spinner from '@/components/elements/Spinner';
 import { NotFound, ServerError } from '@/components/elements/ScreenBlock';
 import { httpErrorToHuman } from '@/api/http';
 import { useStoreState } from 'easy-peasy';
-import SubNavigation from '@/components/elements/SubNavigation';
 import InstallListener from '@/components/server/InstallListener';
 import ErrorBoundary from '@/components/elements/ErrorBoundary';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router';
 import ConflictStateRenderer from '@/components/server/ConflictStateRenderer';
 import PermissionRoute from '@/components/elements/PermissionRoute';
@@ -64,65 +63,81 @@ export default () => {
 
     return (
         <React.Fragment key={'server-router'}>
-            <NavigationBar />
-            {!uuid || !id ? (
-                error ? (
-                    <ServerError message={error} />
-                ) : (
-                    <Spinner size={'large'} centered />
-                )
-            ) : (
-                <>
-                    <CSSTransition timeout={150} classNames={'fade'} appear in>
-                        <SubNavigation>
-                            <div>
-                                {routes.server
-                                    .filter((route) => !!route.name)
-                                    .map((route) =>
-                                        route.permission ? (
-                                            <Can key={route.path} action={route.permission} matchAny>
-                                                <NavLink to={to(route.path, true)} exact={route.exact}>
-                                                    {route.name}
-                                                </NavLink>
-                                            </Can>
-                                        ) : (
-                                            <NavLink key={route.path} to={to(route.path, true)} exact={route.exact}>
+            <div css={tw`flex min-h-screen`}>
+                <Sidebar>
+                    <Sidebar.Link to={'/'} exact>
+                        <FontAwesomeIcon icon={faLayerGroup} css={tw`mr-3 w-4`} />
+                        Dashboard
+                    </Sidebar.Link>
+                    {!!uuid && !!id && (
+                        <Sidebar.Section title={'Server'} icon={faServer} to={match.url}>
+                            {routes.server
+                                .filter((route) => !!route.name)
+                                .map((route) =>
+                                    route.permission ? (
+                                        <Can key={route.path} action={route.permission} matchAny>
+                                            <Sidebar.DropdownLink to={to(route.path, true)} exact={route.exact}>
                                                 {route.name}
-                                            </NavLink>
-                                        )
-                                    )}
-                                {rootAdmin && (
-                                    // eslint-disable-next-line react/jsx-no-target-blank
-                                    <a href={`/admin/servers/view/${serverId}`} target={'_blank'}>
-                                        <FontAwesomeIcon icon={faExternalLinkAlt} />
-                                    </a>
+                                            </Sidebar.DropdownLink>
+                                        </Can>
+                                    ) : (
+                                        <Sidebar.DropdownLink key={route.path} to={to(route.path, true)} exact={route.exact}>
+                                            {route.name}
+                                        </Sidebar.DropdownLink>
+                                    )
                                 )}
-                            </div>
-                        </SubNavigation>
-                    </CSSTransition>
-                    <InstallListener />
-                    <TransferListener />
-                    <WebsocketHandler />
-                    {inConflictState && (!rootAdmin || (rootAdmin && !location.pathname.endsWith(`/server/${id}`))) ? (
-                        <ConflictStateRenderer />
-                    ) : (
-                        <ErrorBoundary>
-                            <TransitionRouter>
-                                <Switch location={location}>
-                                    {routes.server.map(({ path, permission, component: Component }) => (
-                                        <PermissionRoute key={path} permission={permission} path={to(path)} exact>
-                                            <Spinner.Suspense>
-                                                <Component />
-                                            </Spinner.Suspense>
-                                        </PermissionRoute>
-                                    ))}
-                                    <Route path={'*'} component={NotFound} />
-                                </Switch>
-                            </TransitionRouter>
-                        </ErrorBoundary>
+                            {rootAdmin && (
+                                <Sidebar.DropdownExternalLink href={`/admin/servers/view/${serverId}`} target={'_blank'} rel={'noreferrer'}>
+                                    <FontAwesomeIcon icon={faExternalLinkAlt} css={tw`mr-2`} />
+                                    Admin View
+                                </Sidebar.DropdownExternalLink>
+                            )}
+                        </Sidebar.Section>
                     )}
-                </>
-            )}
+                    <Sidebar.Section title={'Account'} icon={faUserCog} to={'/account'}>
+                        {routes.account
+                            .filter((route) => !!route.name)
+                            .map(({ path, name, exact = false }) => (
+                                <Sidebar.DropdownLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
+                                    {name}
+                                </Sidebar.DropdownLink>
+                            ))}
+                    </Sidebar.Section>
+                </Sidebar>
+                <main css={tw`flex-1 min-w-0`}>
+                    {!uuid || !id ? (
+                        error ? (
+                            <ServerError message={error} />
+                        ) : (
+                            <Spinner size={'large'} centered />
+                        )
+                    ) : (
+                        <>
+                            <InstallListener />
+                            <TransferListener />
+                            <WebsocketHandler />
+                            {inConflictState && (!rootAdmin || (rootAdmin && !location.pathname.endsWith(`/server/${id}`))) ? (
+                                <ConflictStateRenderer />
+                            ) : (
+                                <ErrorBoundary>
+                                    <TransitionRouter>
+                                        <Switch location={location}>
+                                            {routes.server.map(({ path, permission, component: Component }) => (
+                                                <PermissionRoute key={path} permission={permission} path={to(path)} exact>
+                                                    <Spinner.Suspense>
+                                                        <Component />
+                                                    </Spinner.Suspense>
+                                                </PermissionRoute>
+                                            ))}
+                                            <Route path={'*'} component={NotFound} />
+                                        </Switch>
+                                    </TransitionRouter>
+                                </ErrorBoundary>
+                            )}
+                        </>
+                    )}
+                </main>
+            </div>
         </React.Fragment>
     );
 };

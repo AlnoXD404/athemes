@@ -1,10 +1,12 @@
 import React from 'react';
-import { NavLink, Route, Switch } from 'react-router-dom';
-import NavigationBar from '@/components/NavigationBar';
+import { Route, Switch } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLayerGroup, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import tw from 'twin.macro';
+import Sidebar from '@/components/Sidebar';
 import DashboardContainer from '@/components/dashboard/DashboardContainer';
 import { NotFound } from '@/components/elements/ScreenBlock';
 import TransitionRouter from '@/TransitionRouter';
-import SubNavigation from '@/components/elements/SubNavigation';
 import { useLocation } from 'react-router';
 import Spinner from '@/components/elements/Spinner';
 import routes from '@/routers/routes';
@@ -13,38 +15,41 @@ export default () => {
     const location = useLocation();
 
     return (
-        <>
-            <NavigationBar />
-            {location.pathname.startsWith('/account') && (
-                <SubNavigation>
-                    <div>
-                        {routes.account
-                            .filter((route) => !!route.name)
-                            .map(({ path, name, exact = false }) => (
-                                <NavLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
-                                    {name}
-                                </NavLink>
-                            ))}
-                    </div>
-                </SubNavigation>
-            )}
-            <TransitionRouter>
-                <React.Suspense fallback={<Spinner centered />}>
-                    <Switch location={location}>
-                        <Route path={'/'} exact>
-                            <DashboardContainer />
-                        </Route>
-                        {routes.account.map(({ path, component: Component }) => (
-                            <Route key={path} path={`/account/${path}`.replace('//', '/')} exact>
-                                <Component />
-                            </Route>
+        <div css={tw`flex min-h-screen`}>
+            <Sidebar>
+                <Sidebar.Link to={'/'} exact>
+                    <FontAwesomeIcon icon={faLayerGroup} css={tw`mr-3 w-4`} />
+                    Dashboard
+                </Sidebar.Link>
+                <Sidebar.Section title={'Account'} icon={faUserCog} to={'/account'}>
+                    {routes.account
+                        .filter((route) => !!route.name)
+                        .map(({ path, name, exact = false }) => (
+                            <Sidebar.DropdownLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
+                                {name}
+                            </Sidebar.DropdownLink>
                         ))}
-                        <Route path={'*'}>
-                            <NotFound />
-                        </Route>
-                    </Switch>
-                </React.Suspense>
-            </TransitionRouter>
-        </>
+                </Sidebar.Section>
+            </Sidebar>
+            <main css={tw`flex-1 min-w-0`}>
+                <TransitionRouter>
+                    <React.Suspense fallback={<Spinner centered />}>
+                        <Switch location={location}>
+                            <Route path={'/'} exact>
+                                <DashboardContainer />
+                            </Route>
+                            {routes.account.map(({ path, component: Component }) => (
+                                <Route key={path} path={`/account/${path}`.replace('//', '/')} exact>
+                                    <Component />
+                                </Route>
+                            ))}
+                            <Route path={'*'}>
+                                <NotFound />
+                            </Route>
+                        </Switch>
+                    </React.Suspense>
+                </TransitionRouter>
+            </main>
+        </div>
     );
 };
