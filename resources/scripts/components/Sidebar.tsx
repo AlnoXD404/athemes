@@ -45,7 +45,7 @@ const SidebarLink = styled(NavLink)`
 `;
 
 const DropdownLink = styled(NavLink)`
-    ${tw`flex items-center gap-3 py-3 pl-12 pr-4 mx-3 text-base font-semibold text-neutral-400 no-underline whitespace-nowrap rounded-xl transition-colors duration-150`};
+    ${tw`flex items-center gap-3 py-3 pl-8 pr-4 mx-3 text-base font-semibold text-neutral-400 no-underline whitespace-nowrap rounded-xl transition-colors duration-150`};
 
     &:hover {
         ${tw`text-neutral-100 bg-neutral-800/40`};
@@ -58,7 +58,7 @@ const DropdownLink = styled(NavLink)`
 `;
 
 const DropdownExternalLink = styled.a`
-    ${tw`flex items-center gap-3 py-3 pl-12 pr-4 mx-3 text-base font-semibold text-neutral-400 no-underline whitespace-nowrap rounded-xl transition-colors duration-150`};
+    ${tw`flex items-center gap-3 py-3 pl-8 pr-4 mx-3 text-base font-semibold text-neutral-400 no-underline whitespace-nowrap rounded-xl transition-colors duration-150`};
 
     &:hover {
         ${tw`text-neutral-100 bg-neutral-800/40`};
@@ -96,7 +96,7 @@ const MobileBackdrop = styled.div`
 `;
 
 const MobileDrawer = styled.div`
-    ${tw`absolute left-0 top-0 h-full w-80 max-w-[85vw] bg-neutral-900 shadow-2xl flex flex-col`};
+    ${tw`absolute left-0 top-0 h-full w-[230px] max-w-[85vw] bg-neutral-900 shadow-2xl flex flex-col`};
 
     &.slide-enter {
         transform: translateX(-100%);
@@ -291,7 +291,7 @@ const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false, hideS
                     <FontAwesomeIcon icon={faBars} css={tw`w-5 h-5`} />
                 </button>
             </div>
-            <aside css={tw`hidden md:flex flex-col w-80 flex-shrink-0 bg-neutral-900 border-r border-neutral-800 sticky top-0 h-screen`}>
+            <aside css={tw`hidden md:flex flex-col w-[230px] flex-shrink-0 bg-neutral-900 border-r border-neutral-800 sticky top-0 h-screen`}>
                 {content}
             </aside>
             {mobileOpen && (

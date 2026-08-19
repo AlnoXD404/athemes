@@ -3,6 +3,12 @@ This file is a running track of new features and fixes to each version of the pa
 
 This project follows [Semantic Versioning](http://semver.org) guidelines.
 
+## v1.24
+### Changed
+* Matches the client sidebar width to the admin panel sidebar (230px) and adjusts inner padding so labels fit without wrapping.
+* Restructures the Console page into a stacked layout: power controls and an SFTP button at the top, server status cards in a responsive 2-4 column grid below, and the terminal window full-width underneath.
+* Adds a Server ID status card to the console stats grid.
+
 ## v1.23
 ### Changed
 * Redesigns the client sidebar with a larger, bolder layout: wider sidebar, taller menu items, larger semibold labels, and 20px icons on every menu entry.

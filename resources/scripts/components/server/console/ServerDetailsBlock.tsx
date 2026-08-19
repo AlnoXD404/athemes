@@ -3,6 +3,7 @@ import {
     faClock,
     faCloudDownloadAlt,
     faCloudUploadAlt,
+    faFingerprint,
     faHdd,
     faMemory,
     faMicrochip,
@@ -46,6 +47,7 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
     const connected = ServerContext.useStoreState((state) => state.socket.connected);
     const instance = ServerContext.useStoreState((state) => state.socket.instance);
     const limits = ServerContext.useStoreState((state) => state.server.data!.limits);
+    const internalId = ServerContext.useStoreState((state) => state.server.data!.internalId);
 
     const textLimits = useMemo(
         () => ({
@@ -89,7 +91,10 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
     });
 
     return (
-        <div className={classNames('grid grid-cols-6 gap-2 md:gap-4', className)}>
+        <div className={classNames('grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4', className)}>
+            <StatBlock icon={faFingerprint} title={'Server ID'} copyOnClick={String(internalId)}>
+                {internalId}
+            </StatBlock>
             <StatBlock icon={faWifi} title={'Address'} copyOnClick={allocation}>
                 {allocation}
             </StatBlock>
