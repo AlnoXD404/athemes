@@ -4,7 +4,7 @@ athemes is a free and open source **fork of the Pterodactyl panel** with a premi
 
 > Based on Pterodactyl **v1.15.0**. Not for Pterodactyl 0.7.x or 2.x.
 
-![athemes Theme](https://github.com/AlnoXD404/athemes/blob/main/.github/banner.png?raw=true)
+Preview on Discord : https://discord.gg/k5bue2kesg
 
 ## Features
 
