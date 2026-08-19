@@ -65,9 +65,9 @@ export default () => {
     return (
         <React.Fragment key={'server-router'}>
             <div css={tw`flex min-h-screen`}>
-                <Sidebar hideAccount={!!uuid && !!id}>
+                <Sidebar hideAccount={!!uuid && !!id} hideSearch>
                     <Sidebar.Link to={'/'} exact>
-                        <FontAwesomeIcon icon={faLayerGroup} css={tw`mr-3 w-4`} />
+                        <FontAwesomeIcon icon={faLayerGroup} css={tw`w-5 h-5`} />
                         Dashboard
                     </Sidebar.Link>
                     {!!uuid && !!id ? (
@@ -78,18 +78,20 @@ export default () => {
                                     route.permission ? (
                                         <Can key={route.path} action={route.permission} matchAny>
                                             <Sidebar.DropdownLink to={to(route.path, true)} exact={route.exact}>
+                                                {route.icon && <FontAwesomeIcon icon={route.icon} css={tw`w-5 h-5 flex-shrink-0`} />}
                                                 {route.name}
                                             </Sidebar.DropdownLink>
                                         </Can>
                                     ) : (
                                         <Sidebar.DropdownLink key={route.path} to={to(route.path, true)} exact={route.exact}>
+                                            {route.icon && <FontAwesomeIcon icon={route.icon} css={tw`w-5 h-5 flex-shrink-0`} />}
                                             {route.name}
                                         </Sidebar.DropdownLink>
                                     )
                                 )}
                             {rootAdmin && (
                                 <Sidebar.DropdownExternalLink href={`/admin/servers/view/${serverId}`} target={'_blank'} rel={'noreferrer'}>
-                                    <FontAwesomeIcon icon={faExternalLinkAlt} css={tw`mr-2`} />
+                                    <FontAwesomeIcon icon={faExternalLinkAlt} css={tw`w-5 h-5 flex-shrink-0`} />
                                     Admin View
                                 </Sidebar.DropdownExternalLink>
                             )}
@@ -98,8 +100,9 @@ export default () => {
                         <Sidebar.Section title={'Account'} icon={faUserCog} to={'/account'}>
                             {routes.account
                                 .filter((route) => !!route.name)
-                                .map(({ path, name, exact = false }) => (
+                                .map(({ path, name, icon, exact = false }) => (
                                     <Sidebar.DropdownLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
+                                        {icon && <FontAwesomeIcon icon={icon} css={tw`w-5 h-5 flex-shrink-0`} />}
                                         {name}
                                     </Sidebar.DropdownLink>
                                 ))}

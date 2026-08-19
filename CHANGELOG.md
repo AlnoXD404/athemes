@@ -3,6 +3,12 @@ This file is a running track of new features and fixes to each version of the pa
 
 This project follows [Semantic Versioning](http://semver.org) guidelines.
 
+## v1.23
+### Changed
+* Redesigns the client sidebar with a larger, bolder layout: wider sidebar, taller menu items, larger semibold labels, and 20px icons on every menu entry.
+* Active menu items now render as a vibrant blue pill with white text and icons.
+* Hides the sidebar search bar inside server views (Console, Files, Databases, etc.) while keeping it on the dashboard.
+
 ## v1.22
 ### Changed
 * Adds spacing around the client panel content so the sidebar no longer overlaps page content.

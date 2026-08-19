@@ -1,4 +1,19 @@
 import React, { lazy } from 'react';
+import {
+    faArchive,
+    faCalendarAlt,
+    faCogs,
+    faDatabase,
+    faFolderOpen,
+    faHistory,
+    faKey,
+    faNetworkWired,
+    faRocket,
+    faTerminal,
+    faUser,
+    faUsers,
+} from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import ServerConsole from '@/components/server/console/ServerConsoleContainer';
 import DatabasesContainer from '@/components/server/databases/DatabasesContainer';
 import ScheduleContainer from '@/components/server/schedules/ScheduleContainer';
@@ -28,6 +43,7 @@ interface RouteDefinition {
     // but no navigation link is displayed in the sub-navigation menu.
     name: string | undefined;
     component: React.ComponentType;
+    icon?: IconProp;
     exact?: boolean;
 }
 
@@ -48,22 +64,26 @@ export default {
             path: '/',
             name: 'Account',
             component: AccountOverviewContainer,
+            icon: faUser,
             exact: true,
         },
         {
             path: '/api',
             name: 'API Credentials',
             component: AccountApiContainer,
+            icon: faKey,
         },
         {
             path: '/ssh',
             name: 'SSH Keys',
             component: AccountSSHContainer,
+            icon: faTerminal,
         },
         {
             path: '/activity',
             name: 'Activity',
             component: ActivityLogContainer,
+            icon: faHistory,
         },
     ],
     server: [
@@ -72,6 +92,7 @@ export default {
             permission: null,
             name: 'Console',
             component: ServerConsole,
+            icon: faTerminal,
             exact: true,
         },
         {
@@ -79,6 +100,7 @@ export default {
             permission: 'file.*',
             name: 'Files',
             component: FileManagerContainer,
+            icon: faFolderOpen,
         },
         {
             path: '/files/:action(edit|new)',
@@ -91,12 +113,14 @@ export default {
             permission: 'database.*',
             name: 'Databases',
             component: DatabasesContainer,
+            icon: faDatabase,
         },
         {
             path: '/schedules',
             permission: 'schedule.*',
             name: 'Schedules',
             component: ScheduleContainer,
+            icon: faCalendarAlt,
         },
         {
             path: '/schedules/:id',
@@ -109,36 +133,42 @@ export default {
             permission: 'user.*',
             name: 'Users',
             component: UsersContainer,
+            icon: faUsers,
         },
         {
             path: '/backups',
             permission: 'backup.*',
             name: 'Backups',
             component: BackupContainer,
+            icon: faArchive,
         },
         {
             path: '/network',
             permission: 'allocation.*',
             name: 'Network',
             component: NetworkContainer,
+            icon: faNetworkWired,
         },
         {
             path: '/startup',
             permission: 'startup.*',
             name: 'Startup',
             component: StartupContainer,
+            icon: faRocket,
         },
         {
             path: '/settings',
             permission: ['settings.*', 'file.sftp'],
             name: 'Settings',
             component: SettingsContainer,
+            icon: faCogs,
         },
         {
             path: '/activity',
             permission: 'activity.*',
             name: 'Activity',
             component: ServerActivityLogContainer,
+            icon: faHistory,
         },
     ],
 } as Routes;

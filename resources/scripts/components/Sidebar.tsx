@@ -32,7 +32,7 @@ interface DropdownProps {
 }
 
 const SidebarLink = styled(NavLink)`
-    ${tw`flex items-center px-4 py-2.5 text-sm font-medium text-neutral-300 no-underline transition-colors duration-150 border-l-2 border-transparent`};
+    ${tw`flex items-center gap-3 px-4 py-3 mx-3 text-base font-semibold text-neutral-300 no-underline rounded-xl transition-colors duration-150`};
 
     &:hover {
         ${tw`text-neutral-100 bg-neutral-800/60`};
@@ -40,12 +40,12 @@ const SidebarLink = styled(NavLink)`
 
     &:active,
     &.active {
-        ${tw`text-neutral-100 bg-neutral-800/60 border-cyan-500`};
+        ${tw`text-white bg-[#0066ff]`};
     }
 `;
 
 const DropdownLink = styled(NavLink)`
-    ${tw`block py-2 pl-12 pr-4 text-sm text-neutral-400 no-underline whitespace-nowrap transition-colors duration-150 border-l-2 border-transparent`};
+    ${tw`flex items-center gap-3 py-3 pl-12 pr-4 mx-3 text-base font-semibold text-neutral-400 no-underline whitespace-nowrap rounded-xl transition-colors duration-150`};
 
     &:hover {
         ${tw`text-neutral-100 bg-neutral-800/40`};
@@ -53,12 +53,12 @@ const DropdownLink = styled(NavLink)`
 
     &:active,
     &.active {
-        ${tw`text-neutral-100 border-cyan-500`};
+        ${tw`text-white bg-[#0066ff]`};
     }
 `;
 
 const DropdownExternalLink = styled.a`
-    ${tw`block py-2 pl-12 pr-4 text-sm text-neutral-400 no-underline whitespace-nowrap transition-colors duration-150 border-l-2 border-transparent`};
+    ${tw`flex items-center gap-3 py-3 pl-12 pr-4 mx-3 text-base font-semibold text-neutral-400 no-underline whitespace-nowrap rounded-xl transition-colors duration-150`};
 
     &:hover {
         ${tw`text-neutral-100 bg-neutral-800/40`};
@@ -96,7 +96,7 @@ const MobileBackdrop = styled.div`
 `;
 
 const MobileDrawer = styled.div`
-    ${tw`absolute left-0 top-0 h-full w-72 max-w-[85vw] bg-neutral-900 shadow-2xl flex flex-col`};
+    ${tw`absolute left-0 top-0 h-full w-80 max-w-[85vw] bg-neutral-900 shadow-2xl flex flex-col`};
 
     &.slide-enter {
         transform: translateX(-100%);
@@ -130,17 +130,17 @@ const SidebarSection: React.FC<DropdownProps> = ({ title, icon, to, children }) 
             <button
                 onClick={() => setExpanded((value) => !value)}
                 css={[
-                    tw`w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium text-neutral-300 border-l-2 border-transparent transition-colors duration-150 cursor-pointer select-none`,
-                    active ? tw`text-neutral-100 bg-neutral-800/60 border-cyan-500` : tw`hover:text-neutral-100 hover:bg-neutral-800/60`,
+                    tw`w-full flex items-center justify-between gap-3 px-4 py-3 mx-3 text-base font-semibold text-neutral-300 rounded-xl transition-colors duration-150 cursor-pointer select-none`,
+                    active ? tw`text-white bg-[#0066ff]` : tw`hover:text-neutral-100 hover:bg-neutral-800/60`,
                 ]}
             >
-                <span css={tw`flex items-center min-w-0`}>
-                    {icon && <FontAwesomeIcon icon={icon} css={tw`mr-3 w-4 flex-shrink-0`} />}
+                <span css={tw`flex items-center gap-3 min-w-0`}>
+                    {icon && <FontAwesomeIcon icon={icon} css={tw`w-5 h-5 flex-shrink-0`} />}
                     <span css={tw`truncate`}>{title}</span>
                 </span>
                 <FontAwesomeIcon
                     icon={faChevronDown}
-                    css={[tw`w-3 text-neutral-500 transition-transform duration-250`, open ? tw`rotate-180` : undefined]}
+                    css={[tw`w-4 h-4 flex-shrink-0 transition-transform duration-250`, open ? tw`rotate-180` : undefined]}
                 />
             </button>
             {open && (
@@ -155,9 +155,10 @@ const SidebarSection: React.FC<DropdownProps> = ({ title, icon, to, children }) 
 interface SidebarProps {
     children: React.ReactNode;
     hideAccount?: boolean;
+    hideSearch?: boolean;
 }
 
-const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false }) => {
+const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false, hideSearch = false }) => {
     const name = useStoreState((state: ApplicationStore) => state.settings.data!.name);
     const username = useStoreState((state: ApplicationStore) => state.user.data!.username);
     const rootAdmin = useStoreState((state: ApplicationStore) => state.user.data!.rootAdmin);
@@ -236,18 +237,20 @@ const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false }) => 
                     {name}
                 </LogoLink>
             </div>
-            <div css={tw`px-4 py-3 border-b border-neutral-800`}>
-                <SearchContainer />
-            </div>
+            {!hideSearch && (
+                <div css={tw`px-4 py-3 border-b border-neutral-800`}>
+                    <SearchContainer />
+                </div>
+            )}
             <nav css={tw`flex-1 py-3 overflow-y-auto`}>{children}</nav>
             <div css={tw`border-t border-neutral-800 py-3`}>
                 {!hideAccount && (
                     <>
                         <Link
                             to={'/account'}
-                            css={tw`flex items-center px-4 py-2 text-sm text-neutral-300 no-underline transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
+                            css={tw`flex items-center gap-3 px-4 py-3 mx-3 text-sm font-medium text-neutral-300 no-underline rounded-xl transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
                         >
-                            <span css={tw`flex items-center justify-center w-8 h-8 mr-3`}>
+                            <span css={tw`flex items-center justify-center w-9 h-9 flex-shrink-0`}>
                                 <Avatar.User />
                             </span>
                             {username}
@@ -255,9 +258,9 @@ const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false }) => 
                         {rootAdmin && (
                             <a
                                 href={'/admin'}
-                                css={tw`flex items-center px-4 py-2 text-sm text-neutral-300 no-underline transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
+                                css={tw`flex items-center gap-3 px-4 py-3 mx-3 text-sm font-medium text-neutral-300 no-underline rounded-xl transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
                             >
-                                <FontAwesomeIcon icon={faCogs} css={tw`mr-3 w-4`} />
+                                <FontAwesomeIcon icon={faCogs} css={tw`w-5 h-5 flex-shrink-0`} />
                                 Admin
                             </a>
                         )}
@@ -265,9 +268,9 @@ const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false }) => 
                 )}
                 <button
                     onClick={onTriggerLogout}
-                    css={tw`w-full flex items-center px-4 py-2 text-sm text-neutral-300 cursor-pointer transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
+                    css={tw`w-full flex items-center gap-3 px-4 py-3 mx-3 text-sm font-medium text-neutral-300 cursor-pointer rounded-xl transition-colors duration-150 hover:text-neutral-100 hover:bg-neutral-800/60`}
                 >
-                    <FontAwesomeIcon icon={faSignOutAlt} css={tw`mr-3 w-4`} />
+                    <FontAwesomeIcon icon={faSignOutAlt} css={tw`w-5 h-5 flex-shrink-0`} />
                     Sign Out
                 </button>
             </div>
@@ -288,7 +291,7 @@ const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false }) => 
                     <FontAwesomeIcon icon={faBars} css={tw`w-5 h-5`} />
                 </button>
             </div>
-            <aside css={tw`hidden md:flex flex-col w-72 flex-shrink-0 bg-neutral-900 border-r border-neutral-800 sticky top-0 h-screen`}>
+            <aside css={tw`hidden md:flex flex-col w-80 flex-shrink-0 bg-neutral-900 border-r border-neutral-800 sticky top-0 h-screen`}>
                 {content}
             </aside>
             {mobileOpen && (

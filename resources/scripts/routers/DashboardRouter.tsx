@@ -18,14 +18,15 @@ export default () => {
         <div css={tw`flex min-h-screen`}>
             <Sidebar>
                 <Sidebar.Link to={'/'} exact>
-                    <FontAwesomeIcon icon={faLayerGroup} css={tw`mr-3 w-4`} />
+                    <FontAwesomeIcon icon={faLayerGroup} css={tw`w-5 h-5`} />
                     Dashboard
                 </Sidebar.Link>
                 <Sidebar.Section title={'Account'} icon={faUserCog} to={'/account'}>
                     {routes.account
                         .filter((route) => !!route.name)
-                        .map(({ path, name, exact = false }) => (
+                        .map(({ path, name, icon, exact = false }) => (
                             <Sidebar.DropdownLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
+                                {icon && <FontAwesomeIcon icon={icon} css={tw`w-5 h-5 flex-shrink-0`} />}
                                 {name}
                             </Sidebar.DropdownLink>
                         ))}
