@@ -3,6 +3,12 @@ This file is a running track of new features and fixes to each version of the pa
 
 This project follows [Semantic Versioning](http://semver.org) guidelines.
 
+## v1.21
+### Changed
+* Replaces the top navigation bar with a persistent sidebar on the left edge of the client panel (dashboard and server areas).
+* Adds an animated mobile drawer menu with slide-in transition, swipe-to-close gesture, and Escape key support.
+* Adds creator credit linking to the AlnoXD YouTube channel on the login screen.
+
 ## v1.12.3
 ### Fixed
 * Adds a rate limit when changing email addresses on an account to prevent account enumeration.
