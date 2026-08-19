@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
     faClock,
-    faCloudDownloadAlt,
-    faCloudUploadAlt,
     faFingerprint,
     faHdd,
     faMemory,
     faMicrochip,
+    faNetworkWired,
     faWifi,
 } from '@fortawesome/free-solid-svg-icons';
 import { bytesToString, ip, mbToBytes } from '@/lib/formatters';
@@ -91,8 +90,13 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
     });
 
     return (
-        <div className={classNames('grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4', className)}>
-            <StatBlock icon={faFingerprint} title={'Server ID'} copyOnClick={String(internalId)}>
+        <div className={classNames('grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4', className)}>
+            <StatBlock
+                icon={faFingerprint}
+                title={'Server ID'}
+                copyOnClick={String(internalId)}
+                className={'sm:col-span-3'}
+            >
                 {internalId}
             </StatBlock>
             <StatBlock icon={faWifi} title={'Address'} copyOnClick={allocation}>
@@ -132,11 +136,19 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
             <StatBlock icon={faHdd} title={'Disk'} color={getBackgroundColor(stats.disk / 1024, limits.disk * 1024)}>
                 <Limit limit={textLimits.disk}>{bytesToString(stats.disk)}</Limit>
             </StatBlock>
-            <StatBlock icon={faCloudDownloadAlt} title={'Network (Inbound)'}>
-                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(stats.rx)}
-            </StatBlock>
-            <StatBlock icon={faCloudUploadAlt} title={'Network (Outbound)'}>
-                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(stats.tx)}
+            <StatBlock icon={faNetworkWired} title={'Network'}>
+                {status === 'offline' ? (
+                    <span className={'text-gray-400'}>Offline</span>
+                ) : (
+                    <span className={'whitespace-nowrap'}>
+                        <span className={'mr-2'}>
+                            <span className={'text-gray-300'}>In</span> {bytesToString(stats.rx)}
+                        </span>
+                        <span>
+                            <span className={'text-gray-300'}>Out</span> {bytesToString(stats.tx)}
+                        </span>
+                    </span>
+                )}
             </StatBlock>
         </div>
     );
