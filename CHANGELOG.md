@@ -3,6 +3,12 @@ This file is a running track of new features and fixes to each version of the pa
 
 This project follows [Semantic Versioning](http://semver.org) guidelines.
 
+## v1.25
+### Changed
+* Adds "Created by AlnoXD" credit link (YouTube) to the client footer.
+* Unifies the sidebar into a seamless container: static server-name label replaces the collapsible server section, and active highlighting applies only to the active page.
+* Console power buttons: Start is now blue, Stop stays red, Restart matches the page background, and the SFTP button was removed.
+
 ## v1.24
 ### Changed
 * Matches the client sidebar width to the admin panel sidebar (230px) and adjusts inner padding so labels fit without wrapping.

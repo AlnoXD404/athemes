@@ -35,6 +35,16 @@ const PageContentBlock: React.FC<PageContentBlockProps> = ({ title, showFlashKey
                             Pterodactyl&reg;
                         </a>
                         &nbsp;&copy; 2015 - {new Date().getFullYear()}
+                        <span css={tw`mx-1.5 text-neutral-600`}>|</span>
+                        Created by{' '}
+                        <a
+                            rel={'noopener noreferrer'}
+                            href={'https://youtube.com/@AlnoXD'}
+                            target={'_blank'}
+                            css={tw`no-underline font-medium text-cyan-500 transition-colors duration-150 hover:text-cyan-400`}
+                        >
+                            AlnoXD
+                        </a>
                     </p>
                 </ContentContainer>
             </>

@@ -2,7 +2,7 @@ import TransferListener from '@/components/server/TransferListener';
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLinkAlt, faLayerGroup, faServer, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt, faLayerGroup, faUserCog } from '@fortawesome/free-solid-svg-icons';
 import tw from 'twin.macro';
 import Sidebar from '@/components/Sidebar';
 import TransitionRouter from '@/TransitionRouter';
@@ -71,7 +71,8 @@ export default () => {
                         Dashboard
                     </Sidebar.Link>
                     {!!uuid && !!id ? (
-                        <Sidebar.Section title={serverName || 'Server'} icon={faServer} to={match.url}>
+                        <>
+                            <Sidebar.Label>{serverName || 'Server'}</Sidebar.Label>
                             {routes.server
                                 .filter((route) => !!route.name)
                                 .map((route) =>
@@ -95,7 +96,7 @@ export default () => {
                                     Admin View
                                 </Sidebar.DropdownExternalLink>
                             )}
-                        </Sidebar.Section>
+                        </>
                     ) : (
                         <Sidebar.Section title={'Account'} icon={faUserCog} to={'/account'}>
                             {routes.account

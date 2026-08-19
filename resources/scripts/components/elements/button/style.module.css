@@ -55,6 +55,33 @@
     }
 }
 
+.blue {
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
+    @apply text-blue-50;
+    @apply hover:brightness-110 active:brightness-110 focus:ring-blue-400 focus:ring-opacity-75;
+    box-shadow: 0 6px 18px rgba(59, 130, 246, 0.45);
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(59, 130, 246, 0.5);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        filter: grayscale(0.4);
+    }
+}
+
+.ghost {
+    @apply bg-neutral-800 text-neutral-200;
+    @apply hover:bg-neutral-700 active:bg-neutral-700 focus:ring-gray-300 focus:ring-opacity-50;
+
+    &:disabled {
+        @apply bg-neutral-800/75 text-neutral-200/75;
+    }
+}
+
 .text {
     @apply bg-gray-500 text-gray-50;
     @apply hover:bg-gray-400 active:bg-gray-400 focus:ring-gray-300 focus:ring-opacity-50;

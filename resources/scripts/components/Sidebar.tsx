@@ -65,6 +65,10 @@ const DropdownExternalLink = styled.a`
     }
 `;
 
+const SidebarLabel = styled.div`
+    ${tw`px-4 pt-4 pb-1 mx-3 text-sm font-semibold text-neutral-500 select-none`};
+`;
+
 const LogoLink = styled(Link)`
     ${tw`font-header font-medium no-underline bg-gradient-to-r from-cyan-400 to-primary-500 bg-clip-text text-transparent transition-all duration-150`};
 
@@ -232,18 +236,18 @@ const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false, hideS
 
     const content = (
         <>
-            <div css={tw`px-4 py-5 border-b border-neutral-800`}>
+            <div css={tw`px-4 pt-5 pb-4`}>
                 <LogoLink to={'/'} css={tw`text-2xl`}>
                     {name}
                 </LogoLink>
             </div>
             {!hideSearch && (
-                <div css={tw`px-4 py-3 border-b border-neutral-800`}>
+                <div css={tw`px-4 pb-4`}>
                     <SearchContainer />
                 </div>
             )}
-            <nav css={tw`flex-1 py-3 overflow-y-auto`}>{children}</nav>
-            <div css={tw`border-t border-neutral-800 py-3`}>
+            <nav css={tw`flex-1 py-2 overflow-y-auto`}>{children}</nav>
+            <div css={tw`py-2 pb-4`}>
                 {!hideAccount && (
                     <>
                         <Link
@@ -312,6 +316,7 @@ const _Sidebar: React.FC<SidebarProps> = ({ children, hideAccount = false, hideS
 
 const Sidebar = Object.assign(_Sidebar, {
     Section: SidebarSection,
+    Label: SidebarLabel,
     Link: SidebarLink,
     DropdownLink: DropdownLink,
     DropdownExternalLink: DropdownExternalLink,

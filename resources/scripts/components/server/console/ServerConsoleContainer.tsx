@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { useRouteMatch } from 'react-router-dom';
 import { ServerContext } from '@/state/server';
 import Can from '@/components/elements/Can';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
@@ -21,7 +20,6 @@ const ServerConsoleContainer = () => {
     const isTransferring = ServerContext.useStoreState((state) => state.server.data!.isTransferring);
     const eggFeatures = ServerContext.useStoreState((state) => state.server.data!.eggFeatures, isEqual);
     const isNodeUnderMaintenance = ServerContext.useStoreState((state) => state.server.data!.isNodeUnderMaintenance);
-    const match = useRouteMatch<{ id: string }>();
 
     return (
         <ServerContentBlock title={'Console'}>
@@ -42,19 +40,9 @@ const ServerConsoleContainer = () => {
                     <p className={'text-sm line-clamp-2'}>{description}</p>
                 </div>
                 <div className={'col-span-4 sm:col-span-2 lg:col-span-1 self-end'}>
-                    <div className={'flex flex-col sm:flex-row sm:justify-end items-stretch sm:items-center gap-2'}>
-                        <Can action={['control.start', 'control.stop', 'control.restart']} matchAny>
-                            <PowerButtons className={'flex flex-1 space-x-2'} />
-                        </Can>
-                        <a
-                            href={`${match.url}/files`}
-                            className={
-                                'inline-flex items-center justify-center flex-1 rounded p-2 uppercase tracking-wide text-sm border border-primary-600 bg-primary-500 text-primary-50 no-underline transition-all duration-150 hover:bg-primary-600 hover:border-primary-700'
-                            }
-                        >
-                            SFTP
-                        </a>
-                    </div>
+                    <Can action={['control.start', 'control.stop', 'control.restart']} matchAny>
+                        <PowerButtons className={'flex sm:justify-end space-x-2'} />
+                    </Can>
                 </div>
             </div>
             <div className={'mb-4'}>
